@@ -1,1 +1,459 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>GRUVZ</title>
+<meta name="theme-color" content="#05070b">
+<style>
+:root{
+  --bg:#05070b;--bg2:#08101a;--panel:#0b1119;--panel2:#0e1621;--panel3:#111c2a;
+  --line:#1c2a3a;--line2:#263a50;--text:#f6f8fb;--muted:#8390a1;
+  --blue:#087cff;--blue2:#23a1ff;--blue3:#0c58b8;--green:#41d68d;--red:#ff5d72;--gold:#e5b453;
+  --shadow:0 18px 50px rgba(0,0,0,.38);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:radial-gradient(circle at 48% -16%,#0d2035 0,#05070b 36%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+body{overflow-x:hidden}
+.app{min-height:100vh;display:grid;grid-template-columns:190px 1fr}
+.sidebar{position:sticky;top:0;height:100vh;padding:18px 14px;background:linear-gradient(180deg,rgba(7,10,15,.99),rgba(5,7,11,.99));border-right:1px solid #142131;display:flex;flex-direction:column;z-index:30}
+.logo-mini{width:48px;height:48px;border:2px solid var(--blue);display:grid;place-items:center;border-radius:6px;margin:3px 0 22px 4px;font-size:27px;font-weight:900}
+.logo-mini .dot{color:var(--blue)}
+.nav{display:flex;flex-direction:column;gap:6px}
+.nav-btn{border:0;background:transparent;color:#d5d8df;text-align:left;padding:12px 12px;border-radius:8px;display:flex;align-items:center;gap:11px;font-size:13px}
+.nav-btn:hover{background:#0c1520}
+.nav-btn.active{background:linear-gradient(90deg,#0a2e5b,#08192b);color:white;box-shadow:inset 0 0 0 1px rgba(40,139,255,.18)}
+.nav-ico{width:19px;text-align:center;color:#c7d4e4;font-size:17px}
+.nav-btn.active .nav-ico{color:var(--blue2)}
+.sidebar-spacer{flex:1}
+.main{min-width:0;padding:16px 22px 32px}
+.top{height:75px;position:relative;display:flex;align-items:flex-start;justify-content:center}
+.gruvz{font-size:29px;font-weight:800;letter-spacing:9px;margin-top:3px}
+.gruvz span{color:var(--blue)}
+.pulse{position:absolute;top:45px;width:260px;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent)}
+.pulse:after{content:"";position:absolute;left:48%;top:-8px;width:24px;height:16px;border-left:2px solid var(--blue);border-bottom:2px solid var(--blue);transform:skew(-28deg) rotate(-35deg)}
+.sub-btn{position:absolute;right:0;top:0;border:1px solid #173d68;background:#091524;color:white;border-radius:8px;padding:9px 14px;min-width:136px;text-align:left}
+.sub-btn small{display:block;color:#9fb4ca}
+.page{display:none;animation:fade .14s ease}.page.active{display:block}
+@keyframes fade{from{opacity:.3;transform:translateY(3px)}to{opacity:1;transform:none}}
+.card{background:linear-gradient(180deg,rgba(12,18,27,.98),rgba(8,13,20,.98));border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow)}
+.section-title{font-size:13px;font-weight:800;letter-spacing:.2px;margin:0 0 12px}
+.muted{color:var(--muted)}
+.tiny{font-size:10px;color:var(--muted)}
+.btn{border:1px solid #1f3956;background:#09111b;color:white;border-radius:7px;padding:9px 13px}
+.btn.blue{border-color:#126dc8;background:linear-gradient(180deg,#0d76e8,#0860bd);font-weight:800}
+.btn.ghost{background:#0b121b}
+.btn.small{padding:6px 10px;font-size:11px}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid #1d2b3c;border-radius:999px;padding:6px 9px;background:#0b121a;color:#cbd3dc;font-size:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.home-top{display:grid;grid-template-columns:1.65fr 1fr;gap:10px}
+.reco{min-height:150px;padding:15px;display:grid;grid-template-columns:100px 1fr 180px;gap:15px;align-items:center}
+.album{width:92px;height:92px;border-radius:7px;background:radial-gradient(circle at center,#182233 0 28%,#264f7a 29% 30%,#ff8bac 31% 32%,#172334 33% 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.wave{height:70px;background:
+linear-gradient(90deg,transparent 0 5%,rgba(0,125,255,.2) 5% 6%,transparent 6% 7%),
+repeating-linear-gradient(90deg,transparent 0 4px,rgba(17,137,255,.9) 4px 5px,transparent 5px 8px);
+-webkit-mask:linear-gradient(180deg,transparent 5%,#000 50%,transparent 95%);mask:linear-gradient(180deg,transparent 5%,#000 50%,transparent 95%)}
+.pillar{padding:13px;min-height:178px;text-align:center;display:flex;flex-direction:column;justify-content:space-between}
+.pillar h3{margin:6px 0 0;font-size:14px;letter-spacing:3px}
+.pillar p{font-size:11px;color:#a2acb8;margin:4px 0}
+.icon-box{width:40px;height:40px;border:1px solid #185793;border-radius:7px;margin:0 auto;display:grid;place-items:center;color:var(--blue2)}
+.fake-chart{height:92px;position:relative}
+.fake-chart svg{position:absolute;inset:0;width:100%;height:100%}
+.cluster{height:92px;background:radial-gradient(circle,#1087ff 0 2%,#0d58a1 2% 5%,transparent 6%),radial-gradient(circle at 40% 52%,rgba(43,143,255,.85) 0 2px,transparent 3px);background-size:auto,12px 12px}
+.quickstats{padding:13px}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.statbox{border:1px solid #172638;border-radius:8px;background:#09111a;padding:11px}
+.statbox b{font-size:18px;color:var(--blue2)}
+.upcoming{padding:13px}
+.event-row{display:grid;grid-template-columns:44px 1fr 100px 80px;gap:8px;align-items:center;padding:8px 0;border-top:1px solid #142131}
+.event-row:first-of-type{border-top:0}
+.datebox{border:1px solid #1d3a58;border-radius:6px;padding:5px;text-align:center;font-size:9px}
+.datebox b{font-size:16px}
+.link{color:var(--blue2);font-size:10px}
+.list-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.filters{display:flex;gap:7px;flex-wrap:wrap}
+.list{overflow:hidden}
+.set-row,.playlist-row{display:grid;grid-template-columns:62px 1fr 110px 110px 70px 24px;gap:10px;align-items:center;padding:11px 13px;border-top:1px solid #142131}
+.set-row:first-child,.playlist-row:first-child{border-top:0}
+.thumb{width:54px;height:38px;border-radius:6px;background:linear-gradient(135deg,#2b1e1d,#885037)}
+.form-card{padding:15px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{display:block;font-size:10px;color:#a9b4bf;margin:0 0 5px}
+input,select,textarea{width:100%;background:#081019;border:1px solid #1d2d40;color:white;border-radius:6px;padding:9px;outline:none}
+textarea{min-height:74px;resize:vertical}
+.chips{display:flex;gap:7px;flex-wrap:wrap}
+.chip{padding:7px 10px;border:1px solid #223347;background:#0a131d;border-radius:7px;font-size:10px}
+.chip.active{border-color:#0e7eff;background:#08254a;color:#7ec2ff}
+.stepper{display:flex;justify-content:center;gap:8px;margin:0 0 18px}
+.step{font-size:9px;color:#69798b}.step b{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1px solid #26384b;margin-right:5px}
+.step.active{color:white}.step.active b{background:var(--blue);border-color:var(--blue)}
+.curve-wrap{display:grid;grid-template-columns:1fr 180px;gap:12px}
+.curve{height:310px;border:1px solid #1a2a3c;border-radius:8px;background:
+repeating-linear-gradient(0deg,transparent 0 49px,#122033 50px),
+repeating-linear-gradient(90deg,transparent 0 89px,#122033 90px);position:relative}
+.curve svg{position:absolute;inset:0;width:100%;height:100%}
+.preview{padding:12px}
+.track-table{overflow:hidden}
+.track-head,.track-row{display:grid;grid-template-columns:35px minmax(220px,1.4fr) 1fr 55px 55px 70px 110px;gap:8px;align-items:center;padding:9px 10px}
+.track-head{font-size:9px;color:#718094}
+.track-row{border-top:1px solid #142131;font-size:11px}
+.energy{height:5px;background:#14273c;border-radius:10px;overflow:hidden}
+.energy span{display:block;height:100%;background:linear-gradient(90deg,#086bd1,#1e9bff)}
+.player-mini{margin-top:10px;padding:10px;display:flex;align-items:center;gap:12px}
+.final-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.check{color:var(--green)}
+.playlist-detail{display:grid;grid-template-columns:1fr 220px;gap:12px}
+.cover-big{width:120px;height:120px;border-radius:8px;background:linear-gradient(135deg,#4e2c1b,#c26e32)}
+.detail-top{display:flex;gap:14px;align-items:center;margin-bottom:15px}
+.info-side{padding:13px}
+.calendar{padding:12px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);border-left:1px solid #162538;border-top:1px solid #162538}
+.cal-cell{min-height:92px;border-right:1px solid #162538;border-bottom:1px solid #162538;padding:7px;font-size:9px;color:#7c8999}
+.cal-event{margin-top:5px;padding:5px;border-left:2px solid var(--blue);background:#082246;color:#acd4ff;border-radius:4px;font-size:8px}
+.profile-grid{display:grid;grid-template-columns:1fr;gap:12px}
+.profile-card{padding:14px}
+.profile-top{display:grid;grid-template-columns:270px 1fr;gap:16px}
+.avatar{width:64px;height:64px;border:1px solid #0e7eff;border-radius:50%;display:grid;place-items:center;color:var(--blue2);font-size:24px}
+.genre-bar{display:grid;grid-template-columns:90px 1fr 40px;gap:8px;align-items:center;margin:8px 0;font-size:10px}
+.genre-bar .bar{height:6px;background:#172538;border-radius:10px;overflow:hidden}.genre-bar .bar span{display:block;height:100%;background:var(--blue)}
+.flags{display:flex;gap:26px;align-items:center;flex-wrap:wrap}
+.flag{text-align:center;font-size:9px}.circle-flag{width:35px;height:35px;border-radius:50%;margin:0 auto 4px;background:linear-gradient(90deg,#1d5fff 0 33%,#fff 33% 66%,#ff3847 66%)}
+.plan-current{padding:14px;display:flex;justify-content:space-between;align-items:center}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.plan{padding:14px;min-height:320px}.plan.featured{border-color:#0e7eff;box-shadow:0 0 0 1px #0e7eff inset}
+.price{font-size:29px;margin:8px 0}.features{font-size:10px;line-height:1.9;color:#aab4c0}
+.compare{padding:14px}
+.compare table{width:100%;border-collapse:collapse;font-size:9px}.compare th,.compare td{padding:9px;border:1px solid #172638;text-align:center}
+.live-layout{display:grid;grid-template-columns:1fr 250px;gap:12px}
+.chat-card{min-height:640px;display:flex;flex-direction:column}
+.chat-messages{padding:14px;display:flex;flex-direction:column;gap:10px;flex:1}
+.msg{max-width:82%;padding:11px 12px;border-radius:10px;font-size:11px;line-height:1.45;white-space:pre-wrap}
+.msg.user{align-self:flex-end;background:#0a63c6;border:1px solid #168bff}
+.msg.ai{align-self:flex-start;background:#0c141d;border:1px solid #1f3042}
+.composer{display:grid;grid-template-columns:1fr auto;gap:8px;padding:12px;border-top:1px solid #142131}
+.quick-actions{padding:12px}.quick-actions button{width:100%;margin-bottom:7px;text-align:left}
+.settings-card{padding:15px}
+.toast{position:fixed;right:18px;bottom:18px;background:#0b1d31;border:1px solid #0d72d4;padding:10px 14px;border-radius:8px;opacity:0;transform:translateY(8px);transition:.18s;pointer-events:none;z-index:80;font-size:11px}
+.toast.show{opacity:1;transform:none}
+.mobile-menu{display:none}
+@media(max-width:900px){
+ .app{display:block}.sidebar{position:fixed;left:-220px;width:205px;z-index:60;transition:.2s}.sidebar.open{left:0}
+ .main{padding:12px}.top{height:65px}.gruvz{font-size:23px;letter-spacing:6px}.sub-btn{right:0;top:0;font-size:10px;min-width:auto}
+ .mobile-menu{display:block;position:absolute;left:0;top:0;border:1px solid #1c3045;background:#09111b;color:white;border-radius:7px;padding:8px 10px;z-index:5}
+ .grid3,.grid2,.home-top,.form-grid,.curve-wrap,.final-grid,.playlist-detail,.profile-top,.plans,.live-layout{grid-template-columns:1fr}
+ .reco{grid-template-columns:76px 1fr}.reco .wave{grid-column:1/-1}.album{width:72px;height:72px}
+ .stats-row{grid-template-columns:repeat(2,1fr)}
+ .set-row,.playlist-row{grid-template-columns:48px 1fr 70px}.set-row>*:nth-child(4),.set-row>*:nth-child(6),.playlist-row>*:nth-child(4),.playlist-row>*:nth-child(5),.playlist-row>*:nth-child(6){display:none}
+ .track-head,.track-row{grid-template-columns:28px minmax(150px,1fr) 55px 45px 65px}.track-head>*:nth-child(3),.track-row>*:nth-child(3),.track-head>*:nth-child(7),.track-row>*:nth-child(7){display:none}
+ .cal-cell{min-height:70px}.event-row{grid-template-columns:40px 1fr 70px}.event-row>*:nth-child(4){display:none}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+  <div class="logo-mini">G<span class="dot">•</span></div>
+  <nav class="nav">
+    <button class="nav-btn active" data-page="home"><span class="nav-ico">⌂</span>Accueil</button>
+    <button class="nav-btn" data-page="sets"><span class="nav-ico">⌁</span>Sets</button>
+    <button class="nav-btn" data-page="playlists"><span class="nav-ico">♫</span>Playlists</button>
+    <button class="nav-btn" data-page="calendar"><span class="nav-ico">▣</span>Calendrier</button>
+    <button class="nav-btn" data-page="profile"><span class="nav-ico">♙</span>Profil</button>
+    <button class="nav-btn" data-page="settings"><span class="nav-ico">⚙</span>Paramètres</button>
+  </nav>
+  <div class="sidebar-spacer"></div>
+</aside>
 
+<main class="main">
+  <header class="top">
+    <button class="mobile-menu" onclick="toggleMenu()">☰</button>
+    <div class="gruvz">GRUV<span>Z</span></div><div class="pulse"></div>
+    <button class="sub-btn" onclick="go('subscription')">♛ &nbsp; ABONNEMENT<small>Premium</small></button>
+  </header>
+
+  <!-- HOME -->
+  <section class="page active" id="home">
+    <div class="home-top">
+      <div class="card reco">
+        <div class="album"></div>
+        <div>
+          <div class="tiny" style="color:#5db4ff">✦ RECOMMANDATION DU JOUR</div>
+          <h2 style="margin:7px 0 3px;font-size:16px">Higher Love</h2>
+          <div class="muted" style="font-size:11px">James Blake</div>
+          <div class="tiny" style="margin-top:6px">124 BPM · 8A · <span style="color:#5db4ff">House</span></div>
+          <div class="pill" style="margin-top:8px;color:#55b5ff">↗ Parfait pour ta montée</div>
+          <p class="tiny">Énergie progressive et mélodie envoûtante. Idéal pour faire monter l’intensité de ton set.</p>
+        </div>
+        <div class="wave"></div>
+      </div>
+      <div class="card quickstats">
+        <h3 class="section-title">STATISTIQUES RAPIDES</h3>
+        <div class="stats-row">
+          <div class="statbox"><b>42</b><div class="tiny">SETS</div></div>
+          <div class="statbox"><b>128h</b><div class="tiny">HEURES MIXÉES</div></div>
+          <div class="statbox"><b>1.8K</b><div class="tiny">TRACKS</div></div>
+          <div class="statbox"><b>36</b><div class="tiny">PLAYLISTS</div></div>
+        </div>
+        <div class="fake-chart"><svg viewBox="0 0 400 100" preserveAspectRatio="none"><polyline fill="none" stroke="#158cff" stroke-width="3" points="0,78 60,60 120,68 175,45 230,53 290,25 350,34 400,18"/></svg></div>
+      </div>
+    </div>
+
+    <div class="grid3" style="margin-top:10px">
+      <div class="card pillar" onclick="go('newset')">
+        <div><div class="icon-box">⌁</div><h3>SET BUILDER</h3><p>Construire ma soirée</p></div>
+        <div class="fake-chart"><svg viewBox="0 0 400 100" preserveAspectRatio="none"><polyline fill="none" stroke="#168cff" stroke-width="3" points="0,90 70,75 140,63 220,30 290,20 350,36 400,68"/></svg></div>
+        <button class="btn small">→</button>
+      </div>
+      <div class="card pillar" onclick="go('playlists')">
+        <div><div class="icon-box">▰</div><h3>LIBRARY AI</h3><p>Organiser ma musique</p></div><div class="cluster"></div><button class="btn small">→</button>
+      </div>
+      <div class="card pillar" onclick="go('live')">
+        <div><div class="icon-box">ϟ</div><h3>ASSISTANT LIVE</h3><p>J’ai besoin d’aide maintenant</p></div><div class="wave"></div><button class="btn small">→</button>
+      </div>
+    </div>
+
+    <div class="grid2" style="margin-top:10px">
+      <div class="card upcoming">
+        <h3 class="section-title">PROCHAINS SETS</h3>
+        <div class="event-row"><div class="datebox"><b>22</b><br>JUIN</div><div><b>Sunset Party</b><div class="tiny">Marseille</div></div><div class="tiny">18:00 - 02:00</div><button class="btn small" onclick="go('sets')">Voir</button></div>
+        <div class="event-row"><div class="datebox"><b>28</b><br>JUIN</div><div><b>Club Session</b><div class="tiny">Nice</div></div><div class="tiny">23:00 - 05:00</div><button class="btn small" onclick="go('sets')">Voir</button></div>
+        <div class="event-row"><div class="datebox"><b>05</b><br>JUIL.</div><div><b>Beach Festival</b><div class="tiny">Cannes</div></div><div class="tiny">16:00 - 00:00</div><button class="btn small" onclick="go('sets')">Voir</button></div>
+        <div class="link" onclick="go('calendar')" style="margin-top:8px">Voir tout le calendrier →</div>
+      </div>
+      <div class="card upcoming">
+        <h3 class="section-title">TON PROFIL DJ</h3>
+        <div class="tiny">Styles dominants</div>
+        <div class="chips" style="margin-top:8px"><span class="chip">House</span><span class="chip">Afro House</span><span class="chip">Tech House</span><span class="chip">Melodic Techno</span></div>
+        <div class="tiny" style="margin-top:14px">GRUVZ apprend de tes sets et de tes demandes pour personnaliser ses recommandations.</div>
+        <button class="btn small" style="margin-top:14px" onclick="go('profile')">Voir mon profil</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SETS LIST -->
+  <section class="page" id="sets">
+    <div class="list-head"><div><h2 style="margin:0;font-size:17px">MES SETS</h2><div class="tiny">Tous tes sets GRUVZ</div></div><button class="btn blue" onclick="go('newset')">＋ Créer un set</button></div>
+    <div class="filters"><span class="chip active">Tous</span><span class="chip">À venir</span><span class="chip">Passés</span><span class="chip">Brouillons</span></div>
+    <div class="card list" style="margin-top:12px">
+      <div class="set-row"><div class="thumb"></div><div><b>Sunset Party</b><div class="tiny">Marseille</div></div><div class="tiny">22 JUIN 2024</div><div class="tiny">18:00 - 02:00</div><button class="btn small" onclick="go('tracklist')">Ouvrir</button><div>⋮</div></div>
+      <div class="set-row"><div class="thumb" style="background:linear-gradient(135deg,#162d2d,#a15e20)"></div><div><b>Club Session</b><div class="tiny">Nice</div></div><div class="tiny">28 JUIN 2024</div><div class="tiny">23:00 - 05:00</div><button class="btn small" onclick="go('tracklist')">Ouvrir</button><div>⋮</div></div>
+      <div class="set-row"><div class="thumb" style="background:linear-gradient(135deg,#744c20,#1b2637)"></div><div><b>Beach Festival</b><div class="tiny">Cannes</div></div><div class="tiny">05 JUIL. 2024</div><div class="tiny">16:00 - 00:00</div><button class="btn small" onclick="go('tracklist')">Ouvrir</button><div>⋮</div></div>
+      <div class="set-row"><div class="thumb" style="background:linear-gradient(135deg,#111,#6d2b19)"></div><div><b>Private Event</b><div class="tiny">Aix-en-Provence</div></div><div class="tiny">12 JUIL. 2024</div><div class="tiny">20:00 - 01:00</div><button class="btn small" onclick="go('tracklist')">Ouvrir</button><div>⋮</div></div>
+    </div>
+  </section>
+
+  <!-- NEW SET BRIEF -->
+  <section class="page" id="newset">
+    <div class="stepper"><div class="step active"><b>1</b>Brief</div><div class="step"><b>2</b>Construction</div><div class="step"><b>3</b>Tracklist</div><div class="step"><b>4</b>Finalisation</div></div>
+    <div class="card form-card">
+      <h2 style="margin:0 0 16px;font-size:17px">Parlons de ta soirée</h2>
+      <div class="form-grid">
+        <div><label>Nom du set</label><input value="Sunset Party"></div>
+        <div><label>Date</label><input type="date" value="2026-08-16"></div>
+        <div><label>Lieu</label><input value="Marseille"></div>
+        <div><label>Horaires</label><div class="grid2"><input type="time" value="18:00"><input type="time" value="02:00"></div></div>
+      </div>
+      <label style="margin-top:13px">Type d’événement</label><div class="chips"><span class="chip active">Club</span><span class="chip">Bar / Lounge</span><span class="chip">Festival</span><span class="chip">Privé</span><span class="chip">Mariage</span></div>
+      <div class="form-grid" style="margin-top:13px"><div><label>Public / âge</label><select><option>25 - 35 ans</option></select></div><div><label>Ambiance recherchée</label><select><option>Festive / Énergique</option></select></div></div>
+      <label style="margin-top:13px">Genres / cultures à privilégier</label><div class="chips"><span class="chip">House ×</span><span class="chip">Afro House ×</span><span class="chip">Tech House ×</span><span class="chip">Shatta ×</span><span class="chip">Rap FR ×</span><span class="chip">+ Ajouter</span></div>
+      <label style="margin-top:13px">Ce qu’il faut éviter</label><input placeholder="Ex : hardstyle, dubstep...">
+      <div style="display:flex;justify-content:flex-end;margin-top:16px"><button class="btn blue" onclick="go('curve')">Suivant →</button></div>
+    </div>
+  </section>
+
+  <!-- CURVE -->
+  <section class="page" id="curve">
+    <div class="stepper"><div class="step"><b>✓</b>Brief</div><div class="step active"><b>2</b>Construction</div><div class="step"><b>3</b>Tracklist</div><div class="step"><b>4</b>Finalisation</div></div>
+    <div class="curve-wrap">
+      <div class="card form-card">
+        <h2 style="margin:0 0 4px;font-size:17px">Courbe d’énergie</h2><div class="tiny">Ajuste la dynamique de ton set en fonction du temps.</div>
+        <div class="curve" style="margin-top:14px">
+          <svg viewBox="0 0 800 310" preserveAspectRatio="none">
+            <polyline id="curveLine" fill="none" stroke="#198dff" stroke-width="4" points="0,275 90,250 180,220 270,180 360,120 450,112 540,95 630,118 710,92 800,205"/>
+            <g fill="#1b9aff">
+              <circle cx="90" cy="250" r="6"/><circle cx="180" cy="220" r="6"/><circle cx="270" cy="180" r="6"/><circle cx="360" cy="120" r="6"/><circle cx="450" cy="112" r="6"/><circle cx="540" cy="95" r="6"/><circle cx="630" cy="118" r="6"/><circle cx="710" cy="92" r="6"/>
+            </g>
+          </svg>
+        </div>
+        <div class="chips" style="margin-top:12px"><button class="chip" onclick="curvePreset('up')">Montée progressive</button><button class="chip" onclick="curvePreset('peak')">Pic au milieu</button><button class="chip" onclick="curvePreset('breath')">Respiration</button><button class="chip" onclick="curvePreset('late')">Montée rapide</button></div>
+        <div style="display:flex;justify-content:flex-end;margin-top:14px"><button class="btn blue" onclick="go('tracklist')">Suivant →</button></div>
+      </div>
+      <div class="card preview">
+        <h3 class="section-title">APERÇU</h3><div class="event-row" style="grid-template-columns:1fr 1fr"><div class="tiny">Durée totale<br><b style="color:white">8h00</b></div><div class="tiny">Nombre de tracks<br><b style="color:white">124</b></div></div>
+        <div class="event-row" style="grid-template-columns:1fr 1fr"><div class="tiny">BPM moy.<br><b style="color:white">124</b></div><div class="tiny">Key mix<br><b style="color:white">8A</b></div></div>
+        <button class="btn blue" style="width:100%;margin-top:12px" onclick="toast('Tracklist IA générée')">Générer la tracklist IA</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRACKLIST -->
+  <section class="page" id="tracklist">
+    <div class="stepper"><div class="step"><b>✓</b>Brief</div><div class="step"><b>✓</b>Construction</div><div class="step active"><b>3</b>Tracklist</div><div class="step"><b>4</b>Finalisation</div></div>
+    <div class="list-head"><div><h2 style="margin:0;font-size:17px">Tracklist <span class="muted" style="font-size:11px">(124 tracks)</span></h2></div><div><button class="btn small" onclick="sortTrackTable()">↕ Réorganiser</button> <button class="btn small" onclick="toast('Import prêt à être branché')">⇧ Importer des tracks</button></div></div>
+    <div class="card track-table" id="tracks">
+      <div class="track-head"><div>#</div><div>TRACK</div><div>ARTISTE</div><div>BPM</div><div>KEY</div><div>DURÉE</div><div>ÉNERGIE</div></div>
+    </div>
+    <div class="card player-mini"><div class="thumb" style="width:42px;height:42px"></div><div style="flex:1"><b>Massai</b><div class="tiny">Adam Port</div></div><div class="wave" style="width:230px;height:35px"></div><button class="btn small">▶</button></div>
+    <div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="btn blue" onclick="go('final')">Finaliser →</button></div>
+  </section>
+
+  <!-- FINAL -->
+  <section class="page" id="final">
+    <div class="stepper"><div class="step"><b>✓</b>Brief</div><div class="step"><b>✓</b>Construction</div><div class="step"><b>✓</b>Tracklist</div><div class="step active"><b>4</b>Finalisation</div></div>
+    <div class="final-grid">
+      <div class="card form-card">
+        <h3 class="section-title">RÉCAPITULATIF</h3>
+        <div class="event-row" style="grid-template-columns:1fr 1fr"><div class="tiny">Nom du set<br><b style="color:white">Sunset Party</b></div><div class="tiny">Date<br><b style="color:white">22 Juin 2024</b></div></div>
+        <div class="event-row" style="grid-template-columns:1fr 1fr"><div class="tiny">Lieu<br><b style="color:white">Marseille</b></div><div class="tiny">Horaires<br><b style="color:white">18:00 - 02:00</b></div></div>
+        <div class="event-row" style="grid-template-columns:1fr 1fr"><div class="tiny">Nombre de tracks<br><b style="color:white">124</b></div><div class="tiny">BPM moyen<br><b style="color:white">124</b></div></div>
+        <button class="btn small" onclick="go('newset')">Modifier</button>
+      </div>
+      <div class="card form-card">
+        <h3 class="section-title">TÉLÉCHARGER TON SET</h3><div class="tiny">Télécharge ton set complet avec les morceaux dans l’ordre.</div>
+        <button class="btn blue" style="width:100%;margin:12px 0" onclick="downloadSet()">⇩ Télécharger le dossier (ZIP)</button>
+        <div class="features"><div><span class="check">✓</span> 124 tracks inclus</div><div><span class="check">✓</span> Ordre respecté</div><div><span class="check">✓</span> Fichiers renommés et numérotés</div><div><span class="check">✓</span> setlist.txt inclus</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLAYLISTS -->
+  <section class="page" id="playlists">
+    <div class="list-head"><div><h2 style="margin:0;font-size:17px">PLAYLISTS</h2><div class="tiny">Ta bibliothèque organisée par GRUVZ</div></div><button class="btn blue" onclick="toast('Nouvelle playlist')">＋ Nouvelle playlist</button></div>
+    <div class="filters"><span class="chip active">Mes playlists</span><span class="chip">IA Playlists</span><span class="chip">Genres</span><span class="chip">Années</span><span class="chip">Ambiances</span></div>
+    <div class="card list" style="margin-top:12px">
+      <div class="playlist-row"><div class="thumb"></div><div><b>Afro House Vibes</b></div><div class="tiny">132 tracks</div><div class="tiny">10 Juin 2024</div><div class="tiny">IA Playlist</div><button class="btn small" onclick="go('playlistdetail')">Ouvrir</button></div>
+      <div class="playlist-row"><div class="thumb" style="background:linear-gradient(135deg,#8a5d3c,#222)"></div><div><b>Warm Up House</b></div><div class="tiny">85 tracks</div><div class="tiny">08 Juin 2024</div><div class="tiny">IA Playlist</div><button class="btn small" onclick="go('playlistdetail')">Ouvrir</button></div>
+      <div class="playlist-row"><div class="thumb" style="background:linear-gradient(135deg,#153d51,#59351f)"></div><div><b>Tech House Weapons</b></div><div class="tiny">96 tracks</div><div class="tiny">05 Juin 2024</div><div class="tiny">IA Playlist</div><button class="btn small" onclick="go('playlistdetail')">Ouvrir</button></div>
+      <div class="playlist-row"><div class="thumb" style="background:linear-gradient(135deg,#684b32,#111)"></div><div><b>Classics 90's</b></div><div class="tiny">210 tracks</div><div class="tiny">02 Juin 2024</div><div class="tiny">Personnelle</div><button class="btn small" onclick="go('playlistdetail')">Ouvrir</button></div>
+    </div>
+  </section>
+
+  <!-- PLAYLIST DETAIL -->
+  <section class="page" id="playlistdetail">
+    <div class="playlist-detail">
+      <div class="card form-card">
+        <div class="detail-top"><div class="cover-big"></div><div><h2 style="margin:0 0 5px">Afro House Vibes</h2><div class="tiny">IA Playlist · 132 tracks · 10 Juin 2024</div><div style="margin-top:10px"><button class="btn blue small">▶ Écouter</button> <button class="btn small" onclick="downloadPlaylist()">⇩ Télécharger le dossier (ZIP)</button></div></div></div>
+        <div class="card track-table" id="playlistTracks">
+          <div class="track-head"><div>#</div><div>TRACK</div><div>ARTISTE</div><div>BPM</div><div>KEY</div><div>DURÉE</div><div></div></div>
+        </div>
+      </div>
+      <div class="card info-side"><h3 class="section-title">INFOS</h3><div class="tiny">Genre</div><b>Afro House</b><div class="tiny" style="margin-top:12px">Ambiance</div><b>Groovy / Festive</b><div class="tiny" style="margin-top:12px">BPM moyen</div><b>124</b><div class="tiny" style="margin-top:12px">Key mix</div><b>8A</b><div class="chips" style="margin-top:15px"><span class="chip">Afro</span><span class="chip">Groove</span><span class="chip">Percussions</span><span class="chip">Vocal</span></div></div>
+    </div>
+  </section>
+
+  <!-- CALENDAR -->
+  <section class="page" id="calendar">
+    <div class="list-head"><div><h2 style="margin:0;font-size:17px">Juin 2024</h2></div><button class="btn blue">＋ Ajouter un set</button></div>
+    <div class="card calendar"><div class="cal-grid" id="calendarGrid"></div></div>
+  </section>
+
+  <!-- PROFILE -->
+  <section class="page" id="profile">
+    <div class="profile-grid">
+      <div class="card profile-card profile-top">
+        <div style="display:flex;gap:13px;align-items:center"><div class="avatar">T</div><div><h2 style="margin:0">Tizziano</h2><div class="muted" style="font-size:11px">DJ & Producteur</div><div class="tiny" style="margin-top:9px">⌖ Marseille, France</div><div class="tiny">Membre depuis janvier 2021</div></div></div>
+        <div><h3 class="section-title">MES PRÉFÉRENCES</h3><div class="chips"><span class="chip">House</span><span class="chip">Afro House</span><span class="chip">Tech House</span><span class="chip">Melodic Techno</span><span class="chip">Deep House</span></div><div class="tiny" style="margin-top:12px">STYLE DE MIX</div><b style="font-size:11px">Énergique, Groovy, Mélodique</b></div>
+      </div>
+      <div class="card profile-card">
+        <div class="grid2">
+          <div><h3 class="section-title">MES GOÛTS MUSICAUX</h3><div class="genre-bar"><span>House</span><div class="bar"><span style="width:35%"></span></div><span>35%</span></div><div class="genre-bar"><span>Afro House</span><div class="bar"><span style="width:20%"></span></div><span>20%</span></div><div class="genre-bar"><span>Tech House</span><div class="bar"><span style="width:15%"></span></div><span>15%</span></div><div class="genre-bar"><span>Melodic Techno</span><div class="bar"><span style="width:10%"></span></div><span>10%</span></div></div>
+          <div><h3 class="section-title">AMBIANCES PRÉFÉRÉES</h3><div class="chips"><span class="chip">Énergique</span><span class="chip">Groovy</span><span class="chip">Mélodique</span><span class="chip">Warm</span><span class="chip">Festif</span><span class="chip">Deep</span></div><div class="tiny" style="margin-top:15px">BPM PRÉFÉRÉ</div><b>110 - 128 BPM</b></div>
+        </div>
+      </div>
+      <div class="card profile-card"><h3 class="section-title">CULTURES / PAYS JOUÉS LE PLUS</h3><div class="flags"><div class="flag"><div class="circle-flag"></div>France</div><div class="flag"><div class="circle-flag" style="background:linear-gradient(45deg,#069447,#f7d623)"></div>Afrique</div><div class="flag"><div class="circle-flag" style="background:linear-gradient(180deg,#bf0a30 0 15%,#fff 15% 30%,#bf0a30 30% 45%,#fff 45% 60%,#21468b 60%)"></div>États-Unis</div><div class="flag"><div class="circle-flag" style="background:linear-gradient(45deg,#173f8a,#fff 45% 55%,#d9253b 55%)"></div>Royaume-Uni</div><div class="flag"><div class="circle-flag" style="background:linear-gradient(90deg,#2a6cc0,#d34b42)"></div>Amérique Latine</div></div></div>
+      <div class="card profile-card"><h3 class="section-title">MES STATS</h3><div class="stats-row"><div class="statbox"><b>42</b><div class="tiny">SETS CRÉÉS</div></div><div class="statbox"><b>128h</b><div class="tiny">HEURES MIXÉES</div></div><div class="statbox"><b>1.8K</b><div class="tiny">TRACKS UTILISÉS</div></div><div class="statbox"><b>36</b><div class="tiny">PLAYLISTS</div></div></div></div>
+    </div>
+  </section>
+
+  <!-- SUBSCRIPTION -->
+  <section class="page" id="subscription">
+    <div class="card plan-current"><div><div class="tiny">Votre offre actuelle</div><h2 style="margin:3px 0">Premium <span class="pill" style="color:#5bb4ff">Actif</span></h2><div class="tiny">Accédez à toutes les fonctionnalités avancées de GRUVZ.</div></div><div><div class="tiny">Prochain renouvellement</div><b>14 Juin 2027</b><div><button class="btn small" style="margin-top:8px">Gérer mon abonnement</button></div></div></div>
+    <h3 style="font-size:13px;margin:16px 0 10px">NOS OFFRES</h3>
+    <div class="plans">
+      <div class="card plan"><h2>Free</h2><div class="price">0€<span class="tiny"> /mois</span></div><div class="features">✓ 5 sets max<br>✓ 50 tracks par playlist<br>✓ Export ZIP limité<br>✓ Recommandations basiques<br>✓ Assistant Live limité<br>✕ Set Builder IA avancé<br>✕ Statistiques avancées</div></div>
+      <div class="card plan featured"><div class="pill" style="float:right;color:#6dc1ff">Recommandé</div><h2>Premium</h2><div class="price">9,99€<span class="tiny"> /mois</span></div><button class="btn blue" style="width:100%">Passer à Premium</button><div class="features" style="margin-top:10px">✓ Sets illimités<br>✓ Tracks illimités<br>✓ Export ZIP complet<br>✓ Set Builder IA avancé<br>✓ Assistant Live complet<br>✓ Statistiques avancées<br>✓ Support prioritaire</div></div>
+      <div class="card plan"><h2>Pro</h2><div class="price">19,99€<span class="tiny"> /mois</span></div><button class="btn blue" style="width:100%">Passer à Pro</button><div class="features" style="margin-top:10px">✓ Tout dans Premium<br>✓ Analyse IA personnalisée<br>✓ Suggestions ultra-précises<br>✓ Import cloud<br>✓ Sauvegarde cloud illimitée<br>✓ Accès bêta<br>✓ Support VIP</div></div>
+    </div>
+    <div class="card compare" style="margin-top:12px"><h3 class="section-title">FONCTIONNALITÉS COMPARÉES</h3><table><tr><th>Fonctionnalités</th><th>Free</th><th>Premium</th><th>Pro</th></tr><tr><td>Sets illimités</td><td>✕</td><td class="check">✓</td><td class="check">✓</td></tr><tr><td>Export ZIP complet</td><td>Limité</td><td class="check">✓</td><td class="check">✓</td></tr><tr><td>Set Builder IA avancé</td><td>✕</td><td class="check">✓</td><td class="check">✓</td></tr><tr><td>Assistant Live</td><td>Limité</td><td>Complet</td><td>Complet</td></tr></table></div>
+  </section>
+
+  <!-- LIVE -->
+  <section class="page" id="live">
+    <div class="live-layout">
+      <div class="card chat-card">
+        <div class="form-card" style="border-bottom:1px solid #142131"><h2 style="margin:0;font-size:17px">ASSISTANT LIVE</h2><div class="tiny">Pose ta question, GRUVZ te guide.</div></div>
+        <div class="chat-messages" id="chatMessages">
+          <div class="msg user">Je joue Chambre 04 - DJ Kawest. Je suis en mariage, on me demande 10 min de latino puis je dois revenir Shatta. Je fais quoi ?</div>
+          <div class="msg ai">Bien sûr. Je te conseille une transition progressive vers le latino, environ 5 morceaux en mix standard, puis un morceau passerelle pour revenir proprement au Shatta.
+
+1. Entrée : morceau latino compatible en énergie
+2. 4 à 5 tracks latino
+3. Track passerelle avec percussions
+4. Retour Shatta
+
+Le but : ne pas casser l’énergie du dancefloor.</div>
+        </div>
+        <div class="composer"><textarea id="liveInput" placeholder="Décris-moi la situation..."></textarea><button class="btn blue" onclick="sendLive()">Envoyer</button></div>
+      </div>
+      <div>
+        <div class="card quick-actions"><h3 class="section-title">DEMANDES RAPIDES</h3><button class="btn" onclick="quickLive('On me demande un son hors thème, comment je le place ?')">♫ On me demande un son</button><button class="btn" onclick="quickLive('Je veux changer d’ambiance sans casser l’énergie.')">↻ Changement d’ambiance</button><button class="btn" onclick="quickLive('Comment revenir à mon thème principal ?')">← Revenir à mon thème</button><button class="btn" onclick="quickLive('Je dois rester exactement dans ce style. Donne-moi la prochaine track.')">→ Suggestion prochaine track</button><button class="btn" onclick="quickLive('SOS, j’ai besoin d’une solution rapide pour relancer le dancefloor.')">SOS Problème / urgence</button></div>
+        <div class="card quick-actions" style="margin-top:10px"><h3 class="section-title">ASTUCE DU JOUR</h3><div class="tiny">Pour intégrer un style différent, garde une énergie cohérente et cherche un point commun : percussions, vocal, groove ou tonalité.</div><div class="wave" style="margin-top:10px"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section class="page" id="settings">
+    <div class="card settings-card"><h2 style="margin-top:0">Paramètres</h2><div class="form-grid"><div><label>Langue</label><select><option>Français</option><option>English</option><option>Español</option></select></div><div><label>Couleur d’interface</label><select><option>Bleu GRUVZ</option><option>Vert Standard</option><option>Or Premium</option></select></div><div><label>Notifications</label><select><option>Activées</option><option>Désactivées</option></select></div><div><label>Mode de mix par défaut</label><select><option>Standard ~2 min</option><option>Rapide</option><option>Long</option></select></div></div><button class="btn blue" style="margin-top:14px" onclick="toast('Paramètres enregistrés')">Enregistrer</button></div>
+  </section>
+</main>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const navBtns=[...document.querySelectorAll('.nav-btn[data-page]')];
+function go(id){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ const page=document.getElementById(id); if(page) page.classList.add('active');
+ navBtns.forEach(b=>b.classList.toggle('active',b.dataset.page===id));
+ document.getElementById('sidebar').classList.remove('open');
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+navBtns.forEach(b=>b.onclick=()=>go(b.dataset.page));
+function toggleMenu(){document.getElementById('sidebar').classList.toggle('open')}
+function toast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1700)}
+function curvePreset(type){
+ const line=document.getElementById('curveLine');
+ const p={up:"0,275 90,250 180,220 270,185 360,145 450,110 540,90 630,70 710,62 800,95",peak:"0,275 90,240 180,180 270,115 360,75 450,50 540,90 630,145 710,120 800,210",breath:"0,265 90,230 180,190 270,120 360,80 450,155 540,145 630,95 710,70 800,180",late:"0,275 90,265 180,250 270,230 360,190 450,115 540,70 630,60 710,70 800,155"}[type];
+ line.setAttribute('points',p); toast('Courbe mise à jour');
+}
+const trackData=[
+["001","Intro","Oemmoo",120,"8A","01:12",45],["002","Massai","Adam Port",122,"8A","06:43",64],["003","Black Coffee","SME",124,"7A","05:58",72],["004","Neverender","Rampa",125,"6A","06:02",78],["005","The Chase","Vintage Culture",126,"7A","05:41",84],["006","Heal My Mind","KEINEMUSIK",126,"8A","07:25",91]
+];
+function renderTrackTable(id,data){
+ const root=document.getElementById(id); if(!root)return;
+ root.querySelectorAll('.track-row').forEach(x=>x.remove());
+ data.forEach(r=>{const el=document.createElement('div');el.className='track-row';el.dataset.bpm=r[3];el.innerHTML=`<div>${r[0]}</div><div><b>${r[1]}</b></div><div>${r[2]}</div><div>${r[3]}</div><div>${r[4]}</div><div>${r[5]}</div><div><div class="energy"><span style="width:${r[6]}%"></span></div></div>`;root.appendChild(el)})
+}
+renderTrackTable('tracks',trackData);
+renderTrackTable('playlistTracks',[["001","Yeke Yeke","Mochakk",122,"7A","06:19",68],["002","Makossa","Hugel",123,"8A","05:32",72],["003","Believe","Da Capo",124,"7A","06:25",78],["004","Distant People","Kasango",125,"8A","06:03",84]]);
+function sortTrackTable(){
+ trackData.sort((a,b)=>a[3]-b[3]);renderTrackTable('tracks',trackData);toast('Tracklist réorganisée');
+}
+function sendLive(){
+ const input=document.getElementById('liveInput'); const txt=input.value.trim(); if(!txt)return;
+ const box=document.getElementById('chatMessages'); const u=document.createElement('div');u.className='msg user';u.textContent=txt;box.appendChild(u);
+ const a=document.createElement('div');a.className='msg ai';a.textContent="Mode maquette : ici le cerveau GRUVZ répondra avec une route musicale adaptée au contexte, aux BPM, à l'énergie et au thème de ta soirée.";box.appendChild(a); input.value=''; box.scrollTop=box.scrollHeight;
+}
+function quickLive(t){document.getElementById('liveInput').value=t}
+function downloadSet(){downloadText('GRUVZ-Sunset-Party-setlist.txt','001 - Intro\\n002 - Massai - Adam Port\\n003 - Black Coffee\\n004 - Neverender\\n005 - The Chase\\n006 - Heal My Mind\\n');toast('Setlist téléchargée (démo)')}
+function downloadPlaylist(){downloadText('GRUVZ-Afro-House-Vibes.txt','001 - Yeke Yeke\\n002 - Makossa\\n003 - Believe\\n004 - Distant People\\n');toast('Playlist téléchargée (démo)')}
+function downloadText(name,content){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type:'text/plain'}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+const cal=document.getElementById('calendarGrid');["LUN.","MAR.","MER.","JEU.","VEN.","SAM.","DIM."].forEach(d=>{let x=document.createElement('div');x.className='cal-cell';x.style.minHeight='30px';x.textContent=d;cal.appendChild(x)});
+for(let i=1;i<=35;i++){let x=document.createElement('div');x.className='cal-cell';x.innerHTML=`<b>${i<=30?i:''}</b>${i===8?'<div class="cal-event">Sunset Party<br>18:00-02:00</div>':''}${i===21?'<div class="cal-event">Club Session<br>23:00-05:00</div>':''}${i===26?'<div class="cal-event">Private Event<br>20:00-01:00</div>':''}`;cal.appendChild(x)}
+</script>
+</body>
+</html>
