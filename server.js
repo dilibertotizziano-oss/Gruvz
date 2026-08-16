@@ -1,11 +1,1 @@
-import "dotenv/config";
-import express from "express";
-import path from "path";
-import { fileURLToPath } from "url";
-const __filename=fileURLToPath(import.meta.url);
-const __dirname=path.dirname(__filename);
-const app=express();
-app.use(express.json());
-app.use(express.static(path.join(__dirname,"public")));
-app.get("/api/health",(req,res)=>res.json({ok:true,version:"0.3"}));
-app.listen(process.env.PORT||3000,()=>console.log("GRUVZ V0.3 lancé"));
+import 'dotenv/config';import express from 'express';import path from 'path';import {fileURLToPath} from 'url';const __filename=fileURLToPath(import.meta.url);const __dirname=path.dirname(__filename);const app=express();app.use(express.static(path.join(__dirname,'public')));app.get('/api/health',(req,res)=>res.json({ok:true,version:'5.0.0',ai:false}));app.listen(process.env.PORT||3000,()=>console.log('GRUVZ V5 lancé'));
